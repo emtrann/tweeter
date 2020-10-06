@@ -1,0 +1,27 @@
+nav {
+  height: 120px;
+  width: 100%;
+  background-color: #4056A1;
+  padding: 1.5em;
+}
+
+#title {
+  color: #FFFFFF;
+  font-family: bungee, sans-serif;
+  font-size: 40px;
+}
+
+.tweet-header {
+  font-family: source-sans-pro, sans-serif;
+  color: #FFFFFF;
+  float: right;
+}
+
+.down-arrow {
+  color: red;
+  position: relative;
+  right: -50px;
+  padding-top: 2em;
+  transform: rotate(90deg);
+  font-size: 40px;
+}
