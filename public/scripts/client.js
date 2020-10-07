@@ -60,3 +60,14 @@ const createTweetElement = (tweet) => {
 
 
 console.log(renderTweets(data));
+
+// Submit form data w/ AJAX
+$("#compose-tweet").submit(event => {
+  event.preventDefault();
+  const composeTweet = $("#compose-tweet").val();
+  $.ajax({
+    type: "POST",
+    url: '/tweets/',
+    data: $(this).serialize(),
+  });
+});
