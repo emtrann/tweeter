@@ -4,7 +4,8 @@
 
 .counter {
   font-family: bungee, sans-serif;
-  padding-left: 76vw;
+  display: inline-flex;
+  justify-content: space-between;
 }
 
 #tweet-text {
@@ -17,11 +18,13 @@
 }
 
 button {
+  display: inline-flex;
   font-family: bungee, sans-serif;
   color: white;
   background-color: #4056A1;
   border: none;
   padding: 5px 10px;
+  justify-content: space-between;
 }
 
 textarea {
@@ -36,3 +39,19 @@ textarea {
   background-color: lightgray;
 }
 
+.button-counter {
+  display: flex;
+  justify-content: space-between;
+}
+@media only screen and (min-width: 1024px) {
+  .container {
+    width: 60%;
+    float: right;
+    padding-top: 20%;
+  }
+  #tweet-text {
+    width: 100%;
+    border-bottom-width: 5px;
+    background-color: b5b9c9;
+  }
+}

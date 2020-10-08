@@ -73,7 +73,6 @@ const renderTweets = (tweets) => {
   }
 };
 
-
 // Load tweets after submission
 const loadTweets = () => {
   $.ajax('/tweets/', { method: 'GET' })

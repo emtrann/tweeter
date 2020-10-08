@@ -1,12 +1,11 @@
 nav {
   height: 120px;
   width: 100%;
-  background-color: #4056A1;
+  background-color: #b5b9c9;
   padding: 1.5em;
   position: fixed;
   top: 0; 
 }
-
 #title {
   color: #FFFFFF;
   font-family: bungee, sans-serif;
@@ -26,4 +25,15 @@ nav {
   padding-top: 2em;
   transform: rotate(90deg);
   font-size: 40px;
+}
+
+/* Desktop styles */
+@media only screen and (min-width: 1024px) {
+  nav {
+    height: 120px;
+    width: 100%;
+    background-color: #4056A1;
+    padding: 1.5em;
+    position: fixed;
+    top: 0; 
 }
