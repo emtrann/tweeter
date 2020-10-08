@@ -3,7 +3,18 @@ const escape =  function(str) {
   let div = document.createElement('div');
   div.appendChild(document.createTextNode(str));
   return div.innerHTML;
-}
+};
+
+// Get how long ago date from created to now
+const howManyDays = (createdDate) => {
+  const dateNow = Date.now();
+  let hoursAgo = (dateNow - createdDate) / 1000 / 60 / 60;
+  if (hoursAgo < 24) {
+    return `tweeted ${Math.floor(hoursAgo)} hours ago`;
+  } else {
+    return `tweeted ${Math.floor(hoursAgo / 24)} days ago`;
+  }
+};
 
 // Takes info from tweet object and puts it into HTML
 const createTweetElement = (tweet) => {
@@ -26,20 +37,20 @@ const createTweetElement = (tweet) => {
       <h3>${escape(tweetBody)}</h3>
     </article>
     <footer>
-      <p>${date}</p>
+      <p>${howManyDays(date)}</p>
       <p class="symbols">&#9873 &#10227; &#10084;</p>
     </footer>
   </div>
   `;
 
   return $tweet;
-}
+};
 
 
 // Submit form data w/ AJAX
 
-$(document).ready(function () {
-  $('#compose-tweet').submit(function (event) {
+$(document).ready(function() {
+  $('#compose-tweet').submit(function(event) {
     event.preventDefault();
     let tweetBody = $('#tweet-text').val();
 
@@ -55,30 +66,31 @@ $(document).ready(function () {
       $.post('/tweets', $(this).serialize()).then(
         function() {
           $.ajax('/tweets', { method: 'GET' })
-            .then(function(data) {
+            .then(function() {
               $('#tweet-text').val('');
               $('.counter').html(140);
               $('.tweet-container').empty();
               loadTweets();
-            })
+            });
         });
     }
-  })
+  });
 });
 
 // Goes through each tweet and renders them to tweet container
 const renderTweets = (tweets) => {
   for (let tweet of tweets) {
-    $('.tweet-container').append(createTweetElement(tweet))
+    $('.tweet-container').append(createTweetElement(tweet));
   }
 };
 
 // Load tweets after submission
 const loadTweets = () => {
   $.ajax('/tweets/', { method: 'GET' })
-    .then(function (loadedTweets) {
+    .then(function(loadedTweets) {
       renderTweets(loadedTweets.reverse());
-    })
-}
+    });
+};
 
 loadTweets();
+
