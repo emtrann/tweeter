@@ -1,34 +1,3 @@
-// Submit form data w/ AJAX
-
-$(document).ready(function() {
-  $('#compose-tweet').submit(function(event) {
-    event.preventDefault();
-    let tweetBody = $('#tweet-text').val();
-
-    if (tweetBody === '') {
-      alert('Please ensure you input text in order to submit it');
-    } else if (tweetBody.length > 140) {
-      alert('Please double check to ensure you met our character count!');
-    } else {
-      $.post('/tweets', $(this).serialize()).then(
-        function() {
-          $.ajax('/tweets', {method: 'GET'})
-            .then(function(data) {
-              console.log(data);
-              loadTweets(data[data.length - 1]);
-            });
-        });
-    }
-  })
-});
-
-// Goes through each tweet and renders them to tweet container
-const renderTweets = (tweets) => {
-  for (let tweet of tweets) {
-    $('.tweet-container').append(createTweetElement(tweet))
-  }
-};
-
 // Takes info from tweet object and puts it into HTML
 const createTweetElement = (tweet) => {
   let name = tweet.user.name;
@@ -56,16 +25,46 @@ const createTweetElement = (tweet) => {
 }
 
 
-// Load tweets after submission
-const loadTweets = () => { 
-  $.ajax({
-    url: '/tweets/',
-    type: 'GET',
-    dataType: 'json',
-    success: function(loadedTweets) {
-      renderTweets(loadedTweets)
+// Submit form data w/ AJAX
+
+$(document).ready(function () {
+  $('#compose-tweet').submit(function (event) {
+    event.preventDefault();
+    let tweetBody = $('#tweet-text').val();
+
+    if (tweetBody === '') {
+      alert('Please ensure you input text in order to submit it');
+    } else if (tweetBody.length > 140) {
+      alert('Please double check to ensure you met our character count!');
+    } else {
+      $.post('/tweets', $(this).serialize()).then(
+        function(loadedTweets) {
+          $.ajax('/tweets', { method: 'GET' })
+            .then(function(data) {
+              $('#tweet-text').val('');
+              $('.counter').html(140);
+              $('.tweet-container').empty();
+              loadTweets();
+            })
+        });
     }
-  });
+  })
+});
+
+// Goes through each tweet and renders them to tweet container
+const renderTweets = (tweets) => {
+  for (let tweet of tweets) {
+    $('.tweet-container').append(createTweetElement(tweet))
+  }
+};
+
+
+// Load tweets after submission
+const loadTweets = () => {
+  $.ajax('/tweets/', { method: 'GET' })
+    .then(function (loadedTweets) {
+      renderTweets(loadedTweets.reverse());
+    })
 }
 
 loadTweets();
