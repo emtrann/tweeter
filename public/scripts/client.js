@@ -1,28 +1,26 @@
-// Test / driver code (temporary). Eventually will get this from the server.
-const data = [
-  {
-    "user": {
-      "name": "Newton",
-      "avatars": "https://i.imgur.com/73hZDYK.png"
-      ,
-      "handle": "@SirIsaac"
-    },
-    "content": {
-      "text": "If I have seen further it is by standing on the shoulders of giants"
-    },
-    "created_at": 1461116232227
-  },
-  {
-    "user": {
-      "name": "Descartes",
-      "avatars": "https://i.imgur.com/nlhLi3I.png",
-      "handle": "@rd" },
-    "content": {
-      "text": "Je pense , donc je suis"
-    },
-    "created_at": 1461113959088
-  }
-]
+// Submit form data w/ AJAX
+
+$(document).ready(function() {
+  $('#compose-tweet').submit(function(event) {
+    event.preventDefault();
+    let tweetBody = $('#tweet-text').val();
+
+    if (tweetBody === '') {
+      alert('Please ensure you input text in order to submit it');
+    } else if (tweetBody.length > 140) {
+      alert('Please double check to ensure you met our character count!');
+    } else {
+      $.post('/tweets', $(this).serialize()).then(
+        function() {
+          $.ajax('/tweets', {method: 'GET'})
+            .then(function(data) {
+              console.log(data);
+              loadTweets(data[data.length - 1]);
+            });
+        });
+    }
+  })
+});
 
 // Goes through each tweet and renders them to tweet container
 const renderTweets = (tweets) => {
@@ -30,7 +28,6 @@ const renderTweets = (tweets) => {
     $('.tweet-container').append(createTweetElement(tweet))
   }
 };
-
 
 // Takes info from tweet object and puts it into HTML
 const createTweetElement = (tweet) => {
@@ -59,15 +56,16 @@ const createTweetElement = (tweet) => {
 }
 
 
-console.log(renderTweets(data));
-
-// Submit form data w/ AJAX
-$("#compose-tweet").submit(event => {
-  event.preventDefault();
-  const composeTweet = $("#compose-tweet").val();
+// Load tweets after submission
+const loadTweets = () => { 
   $.ajax({
-    type: "POST",
     url: '/tweets/',
-    data: $(this).serialize(),
+    type: 'GET',
+    dataType: 'json',
+    success: function(loadedTweets) {
+      renderTweets(loadedTweets)
+    }
   });
-});
+}
+
+loadTweets();
