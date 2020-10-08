@@ -28,3 +28,11 @@ textarea {
   background-color: transparent;
 }
 
+#no-text, #over-text {
+  display: none; 
+  border: 3px dotted red;
+  padding: 8px;
+  font-weight: bold;
+  background-color: lightgray;
+}
+

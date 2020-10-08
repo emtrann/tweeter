@@ -1,3 +1,10 @@
+// To avoid XSS
+const escape =  function(str) {
+  let div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
 // Takes info from tweet object and puts it into HTML
 const createTweetElement = (tweet) => {
   let name = tweet.user.name;
@@ -6,19 +13,23 @@ const createTweetElement = (tweet) => {
   let tweetBody = tweet.content.text;
   let date = tweet.created_at;
 
-  let $tweet = `        
-  <header class="tweets">
-    <img src="${icon}">
-    <h3>${name}</h3>
-    <h4>${username}</h4>
-  </header>
-  <article class="tweet-body">
-    <h3>${tweetBody}</h3>
-  </article>
-  <footer>
-    <p>${date}</p>
-    <p class="symbols">&#9873 &#10227; &#10084;</p>
-  </footer>
+  let $tweet = `
+  <div class="individual-tweets">
+    <header class="tweets">
+      <section class="icon-name">
+        <img src="${icon}">
+        <h3>${name}</h3>
+      </section>
+      <h4>${username}</h4>
+    </header>
+    <article class="tweet-body">
+      <h3>${escape(tweetBody)}</h3>
+    </article>
+    <footer>
+      <p>${date}</p>
+      <p class="symbols">&#9873 &#10227; &#10084;</p>
+    </footer>
+  </div>
   `;
 
   return $tweet;
@@ -33,12 +44,16 @@ $(document).ready(function () {
     let tweetBody = $('#tweet-text').val();
 
     if (tweetBody === '') {
-      alert('Please ensure you input text in order to submit it');
+      $("#no-text").slideDown("fast");
+      $("#over-text").slideUp("fast");
     } else if (tweetBody.length > 140) {
-      alert('Please double check to ensure you met our character count!');
+      $("#no-text").slideUp("fast");
+      $("#over-text").slideDown("fast");
     } else {
+      $("#no-text").slideUp("fast");
+      $("#over-text").slideUp("fast");
       $.post('/tweets', $(this).serialize()).then(
-        function(loadedTweets) {
+        function() {
           $.ajax('/tweets', { method: 'GET' })
             .then(function(data) {
               $('#tweet-text').val('');
