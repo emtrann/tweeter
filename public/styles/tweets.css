@@ -23,7 +23,6 @@ header {
   flex-direction: row;
   justify-content: space-between;
   height: 70px;
-  font-family: "Source Sans Pro", sans-serif;
 }
 
 .icon-name {
@@ -34,7 +33,6 @@ h4 {
   display: none;
   align-items: unset;
   color: gray;
-  font-family: "Source Sans Pro", sans-serif;
 }
 
 
@@ -45,14 +43,13 @@ h4 {
 article {
   font-size: 20px;
   padding-left: 1%;
-  font-family: "Source Sans Pro", sans-serif;
   border-bottom: 4px solid gray;
+  word-wrap: break-word;
 }
 
 footer {
   color: gray;
   font-size: 15px;
-  font-family: "Source Sans Pro", sans-serif;
   display: flex;
   justify-content: space-between;
   padding-left: 10px;
